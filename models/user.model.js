@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   role: { type: String, required: true },
   googleId: { type: String, required: true },
   name: { type: String, required: true },

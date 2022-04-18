@@ -26,10 +26,11 @@ exports.getOneById = async (req, res) => {
 
 exports.createOne = async (req, res) => {
   try {
-    const newPost = new Post({ ...req.body });
+    const newPost = new Post(req.body);
     await newPost.save();
     res.json({ message: 'ok', data: newPost });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: err });
   }
 };
