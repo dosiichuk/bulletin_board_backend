@@ -3,11 +3,10 @@ const User = require('../models/user.model');
 
 exports.getAll = async (req, res, next) => {
   try {
-    const posts = await Post.find().populate('author', [
-      'role',
-      'email',
-      'googleId',
-    ]);
+    const posts = await Post.find({ status: { $eq: 'published' } })
+      .populate('author', ['name', 'email', 'googleId'])
+      .select('title content summary price photo publishedDate author location')
+      .sort({ publishedDate: -1 });
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: err });
@@ -28,7 +27,12 @@ exports.createOne = async (req, res) => {
   try {
     const newPost = new Post(req.body);
     await newPost.save();
-    res.json({ message: 'ok', data: newPost });
+    const response = await Post.findById(newPost._id)
+      .populate('author', ['name', 'email', 'googleId'])
+      .select(
+        'title content summary photo publishedDate author location price'
+      );
+    res.json(response);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err });
@@ -37,20 +41,19 @@ exports.createOne = async (req, res) => {
 
 exports.updateOne = async (req, res) => {
   try {
-    await Post.findOneAndUpdate(
+    const post = await Post.findOneAndUpdate(
       { _id: { $eq: req.params.id } },
       { $set: { ...req.body } },
-      { new: true },
-      (error, doc) => {
-        if (error) {
-          res.status(404).json({ message: error });
-        } else {
-          res.status(200).json({ message: 'OK', data: { doc } });
-        }
-      }
+      { new: true }
     );
+    const response = await Post.findById(post._id)
+      .populate('author', ['name', 'email', 'googleId'])
+      .select(
+        'title content summary photo publishedDate author location price'
+      );
+    res.json(response);
   } catch (err) {
-    res.status(500).json({ message: err, here: '' });
+    res.status(500).json({ message: err });
   }
 };
 

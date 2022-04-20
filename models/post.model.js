@@ -36,6 +36,7 @@ const postSchema = mongoose.Schema({
   },
   publishedDate: { type: String, required: true, default: Date.now },
   updatedDate: { type: String },
+  location: { type: String },
   author: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
   photo: { type: String },
   status: {
