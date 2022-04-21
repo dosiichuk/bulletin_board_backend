@@ -3,6 +3,7 @@ const User = require('../models/user.model');
 
 exports.getAll = async (req, res, next) => {
   try {
+    console.log(req.params, req.query);
     const posts = await Post.find({ status: { $eq: 'published' } })
       .populate('author', ['name', 'email', 'googleId'])
       .select('title content summary price photo publishedDate author location')
@@ -25,6 +26,7 @@ exports.getOneById = async (req, res) => {
 
 exports.createOne = async (req, res) => {
   try {
+    console.log(req.body);
     const newPost = new Post(req.body);
     await newPost.save();
     const response = await Post.findById(newPost._id)
