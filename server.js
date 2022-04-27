@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -6,10 +7,14 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const passport = require('passport');
 const session = require('express-session');
-console.log(process.env.clientID);
 const passportConfig = require('./config/passport');
 
 const app = express();
+app.use(
+  '/uploads/images',
+  express.static(path.join(__dirname, 'uploads', 'images'))
+);
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 // init session mechanism
 app.use(session({ secret: process.env.sessionSecret }));
@@ -24,18 +29,37 @@ const authRoutes = require('./routes/auth.routes');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+    credentials: true, //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
+  })
+);
 
 app.use(helmet());
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '/client/build')));
 
+app.use('/auth', authRoutes);
 app.use('/api', postsRoutes);
 app.use('/api', userRoutes);
-app.use('/api/auth', authRoutes);
 
 app.get('/api', (req, res) => {
   res.status(404).send({ post: 'Not found...' });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build/index.html'));
+});
+
+app.use((error, req, res, next) => {
+  //is an error occurs and there is a file sent with request, delete it!
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
 });
 
 const server = app.listen(process.env.PORT || 8000, () => {

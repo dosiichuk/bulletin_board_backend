@@ -1,0 +1,9 @@
+@import '../../../styles/settings.scss';
+
+// .root {
+// }
+.navTitle{
+  @media (max-width: 450px) {
+    display: none;
+  }
+}

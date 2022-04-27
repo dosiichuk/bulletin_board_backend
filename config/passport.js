@@ -9,7 +9,7 @@ passport.use(
       callbackURL: process.env.callbackURL,
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
+      console.log('profile', profile);
       done(null, profile);
     }
   )

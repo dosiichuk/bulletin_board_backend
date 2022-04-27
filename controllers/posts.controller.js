@@ -27,12 +27,19 @@ exports.getOneById = async (req, res) => {
 exports.createOne = async (req, res) => {
   try {
     console.log(req.body);
-    const newPost = new Post(req.body);
+    let photoPath = !req.file
+      ? 'uploads/images/generic.jpg'
+      : req.file.path.replace(/\\/g, '/');
+
+    const newPost = new Post({
+      ...req.body,
+      photo: photoPath,
+    });
     await newPost.save();
     const response = await Post.findById(newPost._id)
       .populate('author', ['name', 'email', 'googleId'])
       .select(
-        'title content summary photo publishedDate author location price'
+        'title content summary photo publishedDate author location price status'
       );
     res.json(response);
   } catch (err) {

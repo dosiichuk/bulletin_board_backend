@@ -1,4 +1,5 @@
 const multer = require('multer');
+const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const MIME_TYPE_MAP = {
@@ -13,7 +14,7 @@ const fileUpload = multer({
     destination: (req, file, cb) => {
       cb(null, 'uploads/images');
     },
-    fileName: (req, file, cb) => {
+    filename: (req, file, cb) => {
       const extension = MIME_TYPE_MAP[file.mimetype];
       cb(null, uuidv4() + '.' + extension);
     },
