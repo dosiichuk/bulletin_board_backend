@@ -23,6 +23,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { deletePostRequest, getPostById } from '../../../redux/postsRedux';
 
 import { getUserData } from '../../../redux/authRedux';
+import { BASE_URL } from '../../../config';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -80,7 +81,7 @@ const Component = ({ data, deletePost, user }) => {
         />
         <CardMedia
           className={classes.media}
-          image={`http://localhost:8000/${data.photo}`}
+          image={`${BASE_URL}/${data.photo}`}
           title='Paella dish'
         />
         <CardContent>

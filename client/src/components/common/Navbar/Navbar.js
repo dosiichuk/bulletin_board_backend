@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 
-import config from '../../../config';
+import { BASE_URL } from '../../../config';
 import { getLoginStatus, logoutSuccess } from '../../../redux/authRedux';
 import { Button } from '../Button/Button';
 import styles from './Navbar.module.scss';
@@ -46,11 +46,11 @@ const Component = ({ loginStatus }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const handleLogin = () => {
-    window.open(`http://localhost:8000/auth/google`, '_self');
+    window.open(`${BASE_URL}/auth/google`, '_self');
   };
   const handleLogout = () => {
     dispatch(logoutSuccess());
-    window.open(`http://localhost:8000/auth/auth.logout`, '_self');
+    window.open(`${BASE_URL}/auth/auth.logout`, '_self');
   };
 
   return (

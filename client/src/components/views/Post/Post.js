@@ -21,6 +21,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import { getUserData } from '../../../redux/authRedux';
+import { BASE_URL } from '../../../config';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -81,7 +82,7 @@ const Component = ({ data, user }) => {
       />
       <CardMedia
         className={classes.media}
-        image={`http://localhost:8000/${data.photo}`}
+        image={`${BASE_URL}/${data.photo}`}
         title='Paella dish'
       />
       <CardContent>

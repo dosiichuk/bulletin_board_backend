@@ -1,5 +1,6 @@
 import axios from 'axios';
-import config from '../config';
+
+import { API_URL } from '../config';
 
 /* selectors */
 export const getAll = ({ posts, user }, onlyMyPosts = false) => {
@@ -39,7 +40,7 @@ export const fetchPostsRequest = filters => async (dispatch, getState) => {
     const isLoading = getIsLoading(getState());
     if (postsDataIsEmpty && !isLoading) {
       dispatch(fetchStarted());
-      const { data } = await axios.get(`${config.api.baseUrl}/posts`, {
+      const { data } = await axios.get(`${API_URL}/posts`, {
         params: { hello: 'words' },
       });
       if (data.length > 0) {
@@ -56,7 +57,7 @@ export const createPostRequest = postData => async dispatch => {
     dispatch(fetchStarted());
     const response = await axios({
       method: 'post',
-      url: `${config.api.baseUrl}/posts`,
+      url: `${API_URL}/posts`,
       data: postData,
       headers: { 'Content-Type': 'multipart/form-data' },
     });
@@ -72,10 +73,7 @@ export const createPostRequest = postData => async dispatch => {
 export const updatePostRequest = postData => async dispatch => {
   try {
     dispatch(fetchStarted());
-    const response = await axios.put(
-      `${config.api.baseUrl}/posts/${postData.id}`,
-      postData
-    );
+    const response = await axios.put(`${API_URL}/posts/${postData.id}`, postData);
 
     if (response.statusText === 'OK') {
       dispatch(updateSuccess(response.data));
@@ -88,7 +86,7 @@ export const updatePostRequest = postData => async dispatch => {
 export const deletePostRequest = _id => async dispatch => {
   try {
     dispatch(fetchStarted());
-    const response = await axios.delete(`${config.api.baseUrl}/posts/${_id}`);
+    const response = await axios.delete(`${API_URL}/posts/${_id}`);
 
     if (response.statusText === 'OK') {
       dispatch(deleteSuccess(_id));

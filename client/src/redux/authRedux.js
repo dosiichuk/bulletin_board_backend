@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import config from '../config';
+import { BASE_URL } from '../config';
 
 /* selectors */
 export const getUserData = ({ user }) => user;
@@ -25,7 +25,7 @@ export const loginError = payload => ({ payload, type: LOGIN_ERROR });
 /* thunk creators */
 export const loginRequest = () => async (dispatch, getState) => {
   const loggedIn = getState().user.loggedIn;
-  const { data } = await Axios.get(`http://localhost:8000/auth`, {
+  const { data } = await Axios.get(`${BASE_URL}/auth`, {
     withCredentials: true,
     mode: 'cors',
     headers: {

@@ -35,7 +35,7 @@ const postSchema = mongoose.Schema({
     },
   },
   publishedDate: { type: String, required: true, default: Date.now },
-  updatedDate: { type: String },
+  updatedDate: { type: String, default: Date.now },
   location: { type: String },
   author: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
   photo: { type: String },
@@ -49,10 +49,4 @@ const postSchema = mongoose.Schema({
   },
 });
 
-postSchema.pre('save', function (next) {
-  if (!this.isModified() || this.isNew) return next();
-  //delay of 1s is to make sure that password change is before the new token is issued
-  this.updatedDate = Date.now() - 1000;
-  next();
-});
 module.exports = mongoose.model('Post', postSchema);

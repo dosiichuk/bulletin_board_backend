@@ -18,6 +18,7 @@ import {
   getPostById,
 } from '../../../redux/postsRedux';
 import { getUserData } from '../../../redux/authRedux';
+import { BASE_URL } from '../../../config';
 import styles from './PostForm.module.scss';
 
 const useStyles = makeStyles({
@@ -176,15 +177,15 @@ const Component = ({
                 <img
                   src={
                     previewUrl ||
-                    `http://localhost:8000/${post.photo}` ||
-                    `http://localhost:8000/uploads/images/generic.jpg`
+                    `${BASE_URL}/${post.photo}` ||
+                    `${BASE_URL}/uploads/images/generic.jpg`
                   }
                   className={classes.image}
                   alt={post.photo}
                 />
               ) : (
                 <img
-                  src={previewUrl || `http://localhost:8000/uploads/images/generic.jpg`}
+                  src={previewUrl || `${BASE_URL}/uploads/images/generic.jpg`}
                   className={classes.image}
                   alt={post.photo}
                 />
