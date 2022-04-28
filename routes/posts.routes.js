@@ -1,7 +1,9 @@
 const express = require('express');
-const fileUpload = require('../middleware/fileUpload');
+
 const router = express.Router();
 const PostController = require('../controllers/posts.controller');
+const fileUpload = require('../middleware/fileUpload');
+const { authorize } = require('../middleware/auth');
 
 router.route('/posts').get(PostController.getAll);
 
@@ -9,15 +11,13 @@ router.route('/posts/:id').get(PostController.getOneById);
 
 router
   .route('/posts')
-  .post(fileUpload.single('photo'), PostController.createOne);
+  .post(authorize, fileUpload.single('photo'), PostController.createOne);
 
-router.route('/posts/:id').put(PostController.updateOne);
+router.route('/posts/:id').put(authorize, PostController.updateOne);
 
-router.route('/posts/:id').delete(PostController.deletOne);
+router.route('/posts/:id').delete(authorize, PostController.deletOne);
 
 //additional routes for testing
 router.route('/posts/user/:user').get(PostController.getByUser);
-
-// router.route('/posts/genre/:genre').get(PostController.getByGenre);
 
 module.exports = router;

@@ -1,9 +1,9 @@
 const Post = require('../models/post.model');
 const User = require('../models/user.model');
+const { validateBody } = require('../validators/validator');
 
 exports.getAll = async (req, res, next) => {
   try {
-    console.log(req.params, req.query);
     const posts = await Post.find({ status: { $eq: 'published' } })
       .populate('author', ['name', 'email', 'googleId'])
       .select('title content summary price photo publishedDate author location')
@@ -26,7 +26,9 @@ exports.getOneById = async (req, res) => {
 
 exports.createOne = async (req, res) => {
   try {
-    console.log(req.body);
+    const bodyIsValid = validateBody(req.body);
+    if (!bodyIsValid)
+      throw new Error('Incorrect input values have been provided.', 400);
     let photoPath = !req.file
       ? 'uploads/images/generic.jpg'
       : req.file.path.replace(/\\/g, '/');
@@ -50,6 +52,9 @@ exports.createOne = async (req, res) => {
 
 exports.updateOne = async (req, res) => {
   try {
+    const bodyIsValid = validateBody(req.body);
+    if (!bodyIsValid)
+      throw new Error('Incorrect input values have been provided.', 400);
     const post = await Post.findOneAndUpdate(
       { _id: { $eq: req.params.id } },
       { $set: { ...req.body } },
@@ -62,6 +67,7 @@ exports.updateOne = async (req, res) => {
       );
     res.json(response);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: err });
   }
 };
