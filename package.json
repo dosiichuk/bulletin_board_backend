@@ -1,6 +1,9 @@
 {
   "name": "testimonials",
   "version": "1.0.0",
+  "engines": {
+    "node": "16"
+  },
   "main": "index.js",
   "author": "Dmytro <dmytro.osiychuk@gmail.com>",
   "license": "MIT",
