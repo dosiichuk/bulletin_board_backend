@@ -49,10 +49,6 @@ app.get('/api', (req, res) => {
   res.status(404).send({ post: 'Not found...' });
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build/index.html'));
-});
-
 app.use((error, req, res, next) => {
   //is an error occurs and there is a file sent with request, delete it!
   if (req.file) {
@@ -60,6 +56,10 @@ app.use((error, req, res, next) => {
       console.log(err);
     });
   }
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build/index.html'));
 });
 
 const server = app.listen(process.env.PORT || 8000, () => {
