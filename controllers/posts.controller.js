@@ -55,7 +55,7 @@ exports.updateOne = async (req, res) => {
     const bodyIsValid = validateBody(req.body);
     if (!bodyIsValid)
       throw new Error('Incorrect input values have been provided.', 400);
-    console.log(req.body);
+
     let photoPath = !req.file
       ? 'uploads/images/generic.jpg'
       : req.file.path.replace(/\\/g, '/');
