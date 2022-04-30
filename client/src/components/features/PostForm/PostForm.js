@@ -119,7 +119,9 @@ const Component = ({
       formData.append('status', 'draft');
       createPost(formData);
     } else if (formType === 'editPost') {
-      updatePost({ ...data, id, author: authorId, status: 'published' });
+      formData.append('status', 'published');
+      formData.append('_id', id);
+      updatePost(formData);
     }
     history.push('/');
   };

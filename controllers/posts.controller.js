@@ -55,9 +55,37 @@ exports.updateOne = async (req, res) => {
     const bodyIsValid = validateBody(req.body);
     if (!bodyIsValid)
       throw new Error('Incorrect input values have been provided.', 400);
+    console.log(req.body);
+    let photoPath = !req.file
+      ? 'uploads/images/generic.jpg'
+      : req.file.path.replace(/\\/g, '/');
+    const {
+      content,
+      summary,
+      price,
+      location,
+      title,
+      email,
+      author,
+      status,
+      _id,
+    } = req.body;
+
     const post = await Post.findOneAndUpdate(
-      { _id: { $eq: req.params.id } },
-      { $set: { ...req.body } },
+      { _id: { $eq: _id } },
+      {
+        $set: {
+          content,
+          summary,
+          price,
+          location,
+          title,
+          email,
+          author,
+          status,
+          photo: photoPath,
+        },
+      },
       { new: true }
     );
     const response = await Post.findById(post._id)

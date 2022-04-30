@@ -73,8 +73,12 @@ export const createPostRequest = postData => async dispatch => {
 export const updatePostRequest = postData => async dispatch => {
   try {
     dispatch(fetchStarted());
-    const response = await axios.put(`${API_URL}/posts/${postData.id}`, postData);
-
+    const response = await axios({
+      method: 'put',
+      url: `${API_URL}/posts/${postData._id}`,
+      data: postData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     if (response.statusText === 'OK') {
       dispatch(updateSuccess(response.data));
     }

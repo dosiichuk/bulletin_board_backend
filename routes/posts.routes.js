@@ -13,7 +13,9 @@ router
   .route('/posts')
   .post(authorize, fileUpload.single('photo'), PostController.createOne);
 
-router.route('/posts/:id').put(authorize, PostController.updateOne);
+router
+  .route('/posts/:id')
+  .put(authorize, fileUpload.single('photo'), PostController.updateOne);
 
 router.route('/posts/:id').delete(authorize, PostController.deletOne);
 

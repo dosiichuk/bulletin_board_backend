@@ -2,7 +2,7 @@
   "name": "testimonials",
   "version": "1.0.0",
   "engines": {
-    "node": "16"
+    "node": "14.18.0"
   },
   "main": "index.js",
   "author": "Dmytro <dmytro.osiychuk@gmail.com>",
